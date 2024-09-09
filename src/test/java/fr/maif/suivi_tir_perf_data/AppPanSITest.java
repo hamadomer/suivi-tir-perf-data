@@ -7,16 +7,18 @@ import fr.maif.suivi_tir_perf_data.repositories.AppPanSIRepoistory;
 import fr.maif.suivi_tir_perf_data.repositories.ApplicatifRepository;
 import fr.maif.suivi_tir_perf_data.repositories.PanSIRepository;
 import jakarta.persistence.RollbackException;
-import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.annotation.Propagation;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 @DataJpaTest
+@Transactional(propagation = Propagation.NOT_SUPPORTED)
 public class AppPanSITest {
 
     @Autowired
@@ -86,7 +88,7 @@ public class AppPanSITest {
 
         // TODO : learn more about flush >> https://www.baeldung.com/spring-jpa-flush
 
-        assertThrows( DataIntegrityViolationException.class, () -> appPanSIRepoistory.saveAndFlush(appPanSI) );
+        assertThrows( DataIntegrityViolationException.class, () -> appPanSIRepoistory.save(appPanSI) );
 
 
 
